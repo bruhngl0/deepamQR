@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { purposeOptions, referralOptions, storeLocations } from "./form-options";
+import { purposeOptions, storeLocations } from "./form-options";
 
 const onboardingUrl = "https://deepam-onboarding-form.adityashrm500.workers.dev/";
 
@@ -15,7 +15,6 @@ type FormState = {
   city: string;
   dateOfBirth: string;
   anniversary: string;
-  referralSource: string;
   purposeOfVisit: string;
   website: string;
 };
@@ -29,7 +28,6 @@ const initialForm: FormState = {
   city: "",
   dateOfBirth: "",
   anniversary: "",
-  referralSource: "",
   purposeOfVisit: "",
   website: "",
 };
@@ -64,15 +62,9 @@ export default function Home() {
 
   return (
     <>
-      <header className="site-header">
-        <a href="https://www.deepam.com/" aria-label="Deepam by Ananta home">
-          <Image src="/deepam-logo-horizontal.png" alt="Deepam by Ananta" width={4500} height={1734} priority />
-        </a>
-      </header>
-
       <main className="onboarding-section">
         <div className="onboarding-intro reading-width">
-          <h1><strong>Deepam By Ananta</strong></h1>
+          <Image className="intro-logo" src="/deepam-logo-horizontal.png" alt="Deepam by Ananta" width={4500} height={1734} priority unoptimized />
           <p>Tell us a little about yourself so we can make your visit more personal.</p>
         </div>
 
@@ -122,17 +114,6 @@ export default function Home() {
                   <label htmlFor="anniversary">Anniversary</label>
                   <input id="anniversary" name="anniversary" type="date" autoComplete="off" value={form.anniversary} onChange={(event) => update("anniversary", event.target.value)} />
                 </div>
-              </div>
-            </fieldset>
-
-            <fieldset hidden={isComplete}>
-              <legend>How did you hear about us? <span aria-hidden="true">*</span></legend>
-              <div>
-                <label htmlFor="referral-source">Select an option</label>
-                <select id="referral-source" name="referralSource" required value={form.referralSource} onChange={(event) => update("referralSource", event.target.value)}>
-                  <option value="" disabled>Please select</option>
-                  {referralOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-                </select>
               </div>
             </fieldset>
 

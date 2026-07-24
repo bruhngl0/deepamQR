@@ -2,7 +2,7 @@ import { neon } from "@neondatabase/serverless";
 // Cloudflare injects this virtual module at Worker build time.
 // @ts-expect-error The module is provided by the Cloudflare runtime.
 import { env } from "cloudflare:workers";
-import { purposeOptions, referralOptions, storeLocations } from "../../form-options";
+import { purposeOptions, storeLocations } from "../../form-options";
 
 const MAX_BODY_BYTES = 16 * 1024;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
@@ -19,7 +19,6 @@ type CleanSubmission = {
   city: string | null;
   dateOfBirth: string | null;
   anniversary: string | null;
-  referralSource: string;
   purposeOfVisit: string;
 };
 
@@ -57,7 +56,7 @@ export async function POST(request: Request) {
 
   try {
     const sql = neon(databaseUrl);
-    await sql`INSERT INTO onboarding_submissions (full_name, contact_number, email, store_location, area, city, date_of_birth, anniversary, referral_source, purpose_of_visit) VALUES (${submission.fullName}, ${submission.contactNumber}, ${submission.email}, ${submission.storeLocation}, ${submission.area}, ${submission.city}, ${submission.dateOfBirth}, ${submission.anniversary}, ${submission.referralSource}, ${submission.purposeOfVisit})`;
+    await sql`INSERT INTO onboarding_submissions (full_name, contact_number, email, store_location, area, city, date_of_birth, anniversary, referral_source, purpose_of_visit) VALUES (${submission.fullName}, ${submission.contactNumber}, ${submission.email}, ${submission.storeLocation}, ${submission.area}, ${submission.city}, ${submission.dateOfBirth}, ${submission.anniversary}, ${"Not collected"}, ${submission.purposeOfVisit})`;
   } catch (error) {
     console.error("Failed to store onboarding submission", error instanceof Error ? error.message : "unknown error");
     return Response.json({ error: "Service temporarily unavailable" }, { status: 503, headers: responseHeaders });
@@ -88,10 +87,9 @@ function validateSubmission(body: Submission): CleanSubmission | null {
   const city = cleanText(body.city, 100);
   const dateOfBirth = cleanDate(body.dateOfBirth);
   const anniversary = cleanDate(body.anniversary);
-  const referralSource = cleanText(body.referralSource, 40);
   const purposeOfVisit = cleanText(body.purposeOfVisit, 40);
 
-  if (!fullName || !contactNumber || !storeLocation || !referralSource || !purposeOfVisit) return null;
+  if (!fullName || !contactNumber || !storeLocation || !purposeOfVisit) return null;
   if (hasValue(body.email) && !email) return null;
   if (hasValue(body.area) && !area) return null;
   if (hasValue(body.city) && !city) return null;
@@ -100,10 +98,9 @@ function validateSubmission(body: Submission): CleanSubmission | null {
   if (!/^[+()\d\s-]{7,25}$/.test(contactNumber) || contactNumber.replace(/\D/g, "").length < 7) return null;
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
   if (!storeLocations.includes(storeLocation as (typeof storeLocations)[number])) return null;
-  if (!referralOptions.includes(referralSource as (typeof referralOptions)[number])) return null;
   if (!purposeOptions.includes(purposeOfVisit as (typeof purposeOptions)[number])) return null;
 
-  return { fullName, contactNumber, email, storeLocation, area, city, dateOfBirth, anniversary, referralSource, purposeOfVisit };
+  return { fullName, contactNumber, email, storeLocation, area, city, dateOfBirth, anniversary, purposeOfVisit };
 }
 
 function hasValue(value: unknown): boolean {

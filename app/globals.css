@@ -30,20 +30,10 @@ body {
 
 button, input, select { font: inherit; }
 
-.site-header {
-  border-bottom: 1px solid #ececec;
-  padding: 25px var(--gutter) 24px;
-  text-align: center;
-}
-
-.site-header a { display: inline-block; }
-.site-header img { display: block; height: auto; max-width: min(310px, 70vw); width: 310px; }
-
 .onboarding-section { padding: 56px var(--gutter) 80px; }
 .reading-width { margin-left: auto; margin-right: auto; max-width: var(--reading-width); }
 .onboarding-intro { margin-bottom: 36px; text-align: center; }
-.onboarding-intro h1 { color: var(--heading); font-size: 34px; font-weight: 200; letter-spacing: -0.04em; line-height: 1.2; margin: 0 0 12px; }
-.onboarding-intro h1 strong { font-weight: 600; }
+.intro-logo { display: block; height: auto; margin: 0 auto 12px; max-width: min(310px, 70vw); width: 310px; }
 .onboarding-intro p { color: var(--muted); margin: 0; }
 
 .onboarding-card fieldset { border: 0; margin: 0 0 38px; padding: 0; }
@@ -68,9 +58,8 @@ button, input, select { font: inherit; }
 .visually-hidden { clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
 @media (max-width: 600px) {
-  .site-header { padding-top: 20px; }
   .onboarding-section { padding: 36px var(--gutter) 56px; }
-  .onboarding-intro h1 { font-size: 27px; }
+  .intro-logo { width: 270px; }
   .form-grid { grid-template-columns: 1fr; }
   .span-all { grid-column: auto; }
 }

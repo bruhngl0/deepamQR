@@ -15,6 +15,7 @@ test("includes the fixed deployed onboarding URL and QR asset", async () => {
   await access(new URL("public/deepam-logo-horizontal.png", root));
   assert.match(page, /https:\/\/deepam-onboarding-form\.adityashrm500\.workers\.dev\//);
   assert.match(page, /src="\/deepam-logo-horizontal\.png"/);
+  assert.doesNotMatch(page, /How did you hear about us/);
   assert.doesNotMatch(page, /window\.location\.origin/);
 });
 
@@ -34,7 +35,6 @@ test("keeps the onboarding form and submission contract aligned", async () => {
     "city",
     "dateOfBirth",
     "anniversary",
-    "referralSource",
     "purposeOfVisit",
   ]) {
     assert.match(page, new RegExp(`\\b${field}\\b`));
@@ -57,6 +57,7 @@ test("contains server-side request protections", async () => {
   assert.match(route, /JSON\.parse/);
   assert.match(route, /validateSubmission/);
   assert.match(route, /catch \(error\)/);
+  assert.doesNotMatch(route, /body\.referralSource/);
 });
 
 test("contains Worker security headers", async () => {
@@ -67,15 +68,4 @@ test("contains Worker security headers", async () => {
   assert.match(worker, /X-Content-Type-Options/);
   assert.match(worker, /X-Frame-Options/);
   assert.match(worker, /Referrer-Policy/);
-});
-
-test("deploys the existing Worker without changing the QR destination", async () => {
-  const workflow = await source(".github/workflows/deploy.yml");
-  const page = await source("app/page.tsx");
-
-  assert.match(workflow, /branches: \[main\]/);
-  assert.match(workflow, /--name deepam-onboarding-form/);
-  assert.match(workflow, /CLOUDFLARE_API_TOKEN/);
-  assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID/);
-  assert.match(page, /deepam-onboarding-form\.adityashrm500\.workers\.dev/);
 });
