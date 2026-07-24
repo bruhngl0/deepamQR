@@ -61,7 +61,7 @@ export default function Home() {
           {status === "success" && <p className="notice success">Thank you. We look forward to welcoming you.</p>}{status === "error" && <p className="notice error">Something went wrong. Please try again.</p>}
         </form>
       </section>
-      <aside className="qr-panel"><div><p className="eyebrow">SHARE THE EXPERIENCE</p><h2>Scan to fill the form</h2><p>Keep this QR code handy for your store visitors.</p></div><div className="qr-frame"><img src={`https://quickchart.io/qr?text=${encodeURIComponent(qrUrl)}&size=260&margin=2`} alt="QR code for the Deepam onboarding form" /></div><p className="qr-url">{qrUrl}</p></aside>
+      <aside className="qr-panel"><div><p className="eyebrow">SHARE THE EXPERIENCE</p><h2>Scan to fill the form</h2><p>Keep this QR code handy for your store visitors.</p></div><div className="qr-frame"><img src="/deepam-onboarding-qr.png" alt="QR code for the Deepam onboarding form" /></div><p className="qr-url">{qrUrl}</p></aside>
     </main>
   );
 }
