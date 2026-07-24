@@ -1,3 +1,5 @@
+// Cloudflare injects this virtual module at Worker build time.
+// @ts-expect-error The module is provided by the Cloudflare runtime.
 import { env } from "cloudflare:workers";
 import { drizzle } from "drizzle-orm/d1";
 import * as schema from "./schema";

@@ -1,8 +1,7 @@
-# vinext-starter
+# Deepam onboarding form
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+Public visitor onboarding form for Deepam by Ananta, deployed as a Cloudflare
+Worker with a Neon PostgreSQL submission backend.
 
 ## Prerequisites
 
@@ -16,7 +15,24 @@ npm run dev
 npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+The QR code is a static asset in `public/deepam-onboarding-qr.png` and points to
+the deployed Worker URL. Do not regenerate it when changing the application.
+
+## Production setup
+
+Set `NEON_DATABASE_URL` as a production secret in the Worker environment. Apply
+the SQL in `db/neon-schema.sql` to the target Neon database before accepting
+submissions. Never commit the connection string or place it in client-side code.
+
+The API accepts only same-origin JSON `POST` requests, validates every field on
+the server, limits request bodies to 16 KB, and applies a per-IP in-memory
+throttle. The throttle is intentionally a defense-in-depth measure; add a
+Cloudflare WAF/rate-limit rule for the deployed route if the form is exposed to
+significant public traffic.
+
+The Worker adds content-security, framing, MIME-sniffing, referrer, permissions,
+and HTTPS transport headers. Review these headers if the site later adds
+third-party analytics, fonts, payment providers, or embedded content.
 
 ## Included Shape
 
@@ -89,7 +105,7 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
+- `npm test`: build the app and run onboarding/security contract checks
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
 ## Learn More
