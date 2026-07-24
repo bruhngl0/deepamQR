@@ -16,6 +16,8 @@ test("includes the fixed deployed onboarding URL and QR asset", async () => {
   assert.match(page, /https:\/\/deepam-onboarding-form\.adityashrm500\.workers\.dev\//);
   assert.match(page, /src="\/deepam-logo-horizontal\.png"/);
   assert.doesNotMatch(page, /How did you hear about us/);
+  assert.match(page, /inputMode="numeric"/);
+  assert.match(page, /replace\(\/\\D\/g, ""\)/);
   assert.doesNotMatch(page, /window\.location\.origin/);
 });
 

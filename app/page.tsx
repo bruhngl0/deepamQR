@@ -79,7 +79,7 @@ export default function Home() {
                 </div>
                 <div>
                   <label htmlFor="contact-number">Contact Number <span aria-hidden="true">*</span></label>
-                  <input id="contact-number" name="contactNumber" type="tel" autoComplete="tel" maxLength={25} required value={form.contactNumber} onChange={(event) => update("contactNumber", event.target.value)} />
+                  <input id="contact-number" name="contactNumber" type="tel" inputMode="numeric" pattern="[0-9]*" autoComplete="tel" maxLength={15} required value={form.contactNumber} onChange={(event) => update("contactNumber", event.target.value.replace(/\D/g, ""))} />
                 </div>
                 <div>
                   <label htmlFor="email">Email ID <span>(Optional)</span></label>
