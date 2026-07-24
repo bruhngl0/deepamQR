@@ -12,8 +12,9 @@ test("includes the fixed deployed onboarding URL and QR asset", async () => {
   const page = await source("app/page.tsx");
 
   await access(new URL("public/deepam-onboarding-qr.png", root));
+  await access(new URL("public/deepam-logo-horizontal.png", root));
   assert.match(page, /https:\/\/deepam-onboarding-form\.adityashrm500\.workers\.dev\//);
-  assert.match(page, /src="\/deepam-onboarding-qr\.png"/);
+  assert.match(page, /src="\/deepam-logo-horizontal\.png"/);
   assert.doesNotMatch(page, /window\.location\.origin/);
 });
 
