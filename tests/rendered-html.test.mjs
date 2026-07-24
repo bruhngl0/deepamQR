@@ -67,3 +67,14 @@ test("contains Worker security headers", async () => {
   assert.match(worker, /X-Frame-Options/);
   assert.match(worker, /Referrer-Policy/);
 });
+
+test("deploys the existing Worker without changing the QR destination", async () => {
+  const workflow = await source(".github/workflows/deploy.yml");
+  const page = await source("app/page.tsx");
+
+  assert.match(workflow, /branches: \[main\]/);
+  assert.match(workflow, /--name deepam-onboarding-form/);
+  assert.match(workflow, /CLOUDFLARE_API_TOKEN/);
+  assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID/);
+  assert.match(page, /deepam-onboarding-form\.adityashrm500\.workers\.dev/);
+});

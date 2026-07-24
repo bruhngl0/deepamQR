@@ -24,6 +24,11 @@ Set `NEON_DATABASE_URL` as a production secret in the Worker environment. Apply
 the SQL in `db/neon-schema.sql` to the target Neon database before accepting
 submissions. Never commit the connection string or place it in client-side code.
 
+GitHub Actions deploys pushes to `main` to the existing Worker named
+`deepam-onboarding-form`. Add `CLOUDFLARE_API_TOKEN` and
+`CLOUDFLARE_ACCOUNT_ID` as GitHub Actions secrets. Deploying the existing Worker
+preserves its `workers.dev` URL and its existing `NEON_DATABASE_URL` secret.
+
 The API accepts only same-origin JSON `POST` requests, validates every field on
 the server, limits request bodies to 16 KB, and applies a per-IP in-memory
 throttle. The throttle is intentionally a defense-in-depth measure; add a
